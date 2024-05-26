@@ -239,9 +239,16 @@ func writeTransactionsToCSV(filename string, transactions [][]Transaction) error
 
 // Handler for file uploads and reconciliation via web interface
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	// Set CORS headers
+	w.Header().Set("Access-Control-Allow-Origin", "https://reconiliation.pages.dev")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	// Handle preflight OPTIONS request
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
